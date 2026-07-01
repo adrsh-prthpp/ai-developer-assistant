@@ -49,31 +49,42 @@ OPENAI_MODEL=gpt-5
 
 ## Usage
 
-Run the interactive CLI:
+The AI Developer Assistant supports multiple ways to provide source code for analysis.
+
+### Interactive Mode (Recommended)
+
+Launch the interactive CLI. You will be prompted to either paste source code into the terminal or provide the path to a source file.
 
 ```bash
 python -m src.main
 ```
 
-Paste code directly:
+### Paste Mode
+
+Launch the CLI and paste your source code directly into the terminal. When finished, type `END` on a new line.
 
 ```bash
 python -m src.main --paste
 ```
 
-Load code from a file:
+### File Mode
+
+Analyze a source file directly without using the interactive menu.
 
 ```bash
-python -m src.main --file sample_code/bank_account.py
+python -m src.main --file sample_code/your_file.py
 ```
 
-Save generated documentation:
+### Save Generated Documentation
+
+Automatically save the generated Markdown documentation to the `output/` directory.
 
 ```bash
-python -m src.main --file sample_code/bank_account.py --save
+python -m src.main --file sample_code/your_file.py --save
 ```
 
-Generated Markdown files are written to `output/`.
+Generated Markdown files are saved in the `output/` directory.
+
 
 ## Follow-Up Questions
 
