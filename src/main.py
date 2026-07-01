@@ -184,7 +184,6 @@ def main() -> int:
     print(WELCOME_MESSAGE)
 
     try:
-        print("Reading source...")
         if args.file is not None:
             source_file = args.file
             code = read_file_code(source_file)
