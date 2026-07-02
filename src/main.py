@@ -105,7 +105,6 @@ def save_documentation(markdown: str, source_file: Path | None) -> Path:
     output_path.write_text(markdown, encoding="utf-8")
     return output_path
 
-#this function 
 def wants_followup() -> bool:
     """Ask whether the user wants clarification about the generated documentation."""
     choice = input(
