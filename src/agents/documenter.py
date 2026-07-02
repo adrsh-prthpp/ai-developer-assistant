@@ -3,14 +3,14 @@ from src.prompts.documenter_prompt import documentation_prompt
 from src.services.llm_service import get_llm
 
 
-def generate_documentation(analysis: CodeAnalysis) -> str:
+def generate_documentation(analysis: CodeAnalysis) -> str: 
     """Generate Markdown documentation from a validated code analysis."""
     if not isinstance(analysis, CodeAnalysis):
         raise TypeError("analysis must be a CodeAnalysis instance.")
 
     documentation_chain = documentation_prompt | get_llm()
     response = documentation_chain.invoke(
-        {"code_analysis": analysis.model_dump_json(indent=2)}
+        {"code_analysis": analysis.model_dump_json(indent=2)} #object converted to JSON string for LLM input
     )
 
     if isinstance(response, str):

@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 
+#pydantic validation for structured and stronger validation
 
 class Component(BaseModel):
     """Represents a named component identified during code analysis."""

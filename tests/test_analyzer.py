@@ -29,7 +29,7 @@ class FakeChain:
             improvements=["Validate withdrawal amounts."],
         )
 
-
+#tests analyzer function with mock LLM
 class FakeLLM:
     def with_structured_output(self, schema: type[CodeAnalysis]) -> FakeStructuredLLM:
         assert schema is CodeAnalysis

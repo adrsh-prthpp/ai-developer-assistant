@@ -4,7 +4,7 @@ from langchain_core.prompts import PromptTemplate
 documentation_prompt = PromptTemplate.from_template(
     """You are a technical documentation writer creating professional Markdown documentation for developers.
 
-Use the validated CodeAnalysis object below as the sole source of truth. Convert it into concise, clear, developer-facing documentation.
+Use the validated CodeAnalysis object below as the sole source of truth. Convert it into concise, clear, developer-facing documentation. 
 
 The Markdown document must use exactly these sections:
 

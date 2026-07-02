@@ -4,7 +4,7 @@ from src.prompts.followup_prompt import followup_prompt
 from src.services.llm_service import get_llm
 
 
-def answer_followup(session_messages: list[BaseMessage]) -> str:
+def answer_followup(session_messages: list[BaseMessage]) -> str: #takes in session history list
     """Answer a follow-up question using the current session message history."""
     if not session_messages:
         raise ValueError("Session message history cannot be empty.")

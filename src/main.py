@@ -17,7 +17,7 @@ AI Developer Assistant
 Generate professional documentation for your source code.
 """
 
-
+#define cli options 
 def parse_args() -> argparse.Namespace:
     """Parse command-line arguments for the CLI."""
     parser = argparse.ArgumentParser(
@@ -41,7 +41,7 @@ def parse_args() -> argparse.Namespace:
     )
     return parser.parse_args()
 
-
+#input functions for reading pasted code from user
 def read_pasted_code() -> str:
     """Read pasted code until the user enters END on a new line."""
     print("Paste your source code below.\n")
@@ -60,7 +60,7 @@ def read_pasted_code() -> str:
 
     return code
 
-
+#input function for reading uploaded code from a file
 def read_file_code(file_path: Path) -> str:
     """Read source code from a validated file path."""
     if not file_path.exists():
@@ -74,7 +74,7 @@ def read_file_code(file_path: Path) -> str:
 
     return code
 
-
+# choose mode of code input
 def choose_interactive_input() -> tuple[str, Path | None]:
     """Collect source code using the interactive prompt flow."""
     print("Choose an input method:\n")
@@ -105,7 +105,7 @@ def save_documentation(markdown: str, source_file: Path | None) -> Path:
     output_path.write_text(markdown, encoding="utf-8")
     return output_path
 
-
+#this function 
 def wants_followup() -> bool:
     """Ask whether the user wants clarification about the generated documentation."""
     choice = input(
@@ -124,7 +124,7 @@ def build_followup_session(
     code: str,
     analysis: CodeAnalysis,
     documentation: str,
-) -> list[BaseMessage]:
+) -> list[BaseMessage]: #contains the session context 
     """Create session-only follow-up context for the current CLI run."""
     return [
         SystemMessage(
@@ -151,13 +151,14 @@ def run_followup_conversation(
         return
 
     session_messages = build_followup_session(code, analysis, documentation)
-
+    #loop allows for multiple follow-ups
     while True:
         question = input("What would you like clarified? ").strip()
         if not question:
             print("Please enter a question so I can help clarify the documentation.")
             continue
-
+        
+        #continous build of session context
         session_messages.append(HumanMessage(content=question))
         response = answer_followup(session_messages)
         session_messages.append(AIMessage(content=response))
