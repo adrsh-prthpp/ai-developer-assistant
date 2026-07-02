@@ -11,6 +11,15 @@ AI Developer Assistant is a Python CLI tool that analyzes source code with an LL
 * Optionally save documentation to the `output/` directory.
 * Ask session-only follow-up questions about the analyzed code and generated documentation.
 
+## Model Configuration
+
+The application uses **GPT-5** for all three agents (Analyzer, Documenter, and Follow-up).
+
+A single model was chosen to maintain consistent reasoning and simplify the architecture. Although specialized coding models such as GPT-5-Codex were considered, this application focuses primarily on code analysis and documentation rather than code generation, making GPT-5 an appropriate choice.
+
+The model is configured with a **temperature of 0.2** to prioritize deterministic and consistent technical responses. 
+A lower temperature reduces variability and helps produce structured outputs that are more reliable for Pydantic validation and downstream processing.
+
 ## Architecture
 
 ```text
