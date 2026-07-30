@@ -1,122 +1,86 @@
 # AI Developer Assistant
 
-AI Developer Assistant is a Python CLI tool that analyzes source code with an LLM and generates professional Markdown documentation for developers.
+A Python CLI that analyzes source code with an LLM, validates the analysis with
+Pydantic, and generates structured Markdown documentation. Users can paste code,
+load a source file, save the output, and ask follow-up questions within the
+current session.
 
 ## Features
 
-* Accept code pasted into the terminal or loaded from a source file.
-* Analyze code with LangChain and OpenAI.
-* Validate structured analysis with Pydantic.
-* Generate Markdown documentation from the validated analysis.
-* Optionally save documentation to the `output/` directory.
-* Ask session-only follow-up questions about the analyzed code and generated documentation.
-
-## Model Configuration
-
-The application uses **GPT-5** for all three agents (Analyzer, Documenter, and Follow-up).
-
-A single model was chosen to maintain consistent reasoning and simplify the architecture. Although specialized coding models such as GPT-5-Codex were considered, this application focuses primarily on code analysis and documentation rather than code generation, making GPT-5 an appropriate choice.
-
-The model is configured with a **temperature of 0.2** to prioritize deterministic and consistent technical responses. 
-A lower temperature reduces variability and helps produce structured outputs that are more reliable for Pydantic validation and downstream processing.
+- Interactive, paste, and file-input modes
+- Separate analyzer, documenter, and follow-up agents
+- Structured Pydantic validation between agent stages
+- Markdown generation with optional file output
+- Example Python inputs
+- Unit tests for analyzer, documenter, and CLI utility behavior
 
 ## Architecture
 
 ```text
-User Input
-    |
-    v
-Code Analysis Agent
-    |
-    v
-Pydantic Structured Validation
-    |
-    v
-Documentation Agent
-    |
-    v
-Markdown Output
-    |
-    v
-Optional Follow-Up Assistant
+Source input
+  -> analyzer agent
+  -> validated analysis model
+  -> documenter agent
+  -> Markdown output
+  -> optional follow-up agent
 ```
 
-## Setup
+The separation under `src/agents`, `src/prompts`, `src/models`, and
+`src/services` keeps orchestration, prompts, schemas, and provider configuration
+independent.
 
-Create and activate a virtual environment, then install dependencies:
+## Tech stack
+
+- Python 3.11+
+- LangChain and LangGraph
+- OpenAI API
+- Pydantic
+- Pytest
+
+## Installation
 
 ```bash
+python -m venv .venv
+# Windows
+.\.venv\Scripts\activate
 pip install -r requirements.txt
+copy .env.example .env
 ```
 
-Create a `.env` file from `.env.example` and add your OpenAI API key:
-
-```text
-OPENAI_API_KEY=your_api_key_here
-OPENAI_MODEL=gpt-5
-```
+Add `OPENAI_API_KEY` to `.env`. The committed example contains placeholders only.
 
 ## Usage
 
-The AI Developer Assistant supports multiple ways to provide source code for analysis.
-
-### Interactive Mode (Recommended)
-
-Launch the interactive CLI. You will be prompted to either paste source code into the terminal or provide the path to a source file.
-
 ```bash
 python -m src.main
-```
-
-### Paste Mode
-
-Launch the CLI and paste your source code directly into the terminal. When finished, type `END` on a new line.
-
-```bash
 python -m src.main --paste
-```
-
-### File Mode
-
-Analyze a source file directly without using the interactive menu.
-
-```bash
-python -m src.main --file sample_code/your_file.py
-```
-
-### Save Generated Documentation
-
-Automatically save the generated Markdown documentation to the `output/` directory.
-
-```bash
-python -m src.main --file sample_code/your_file.py --save
-```
-
-Generated Markdown files are saved in the `output/` directory.
-
-
-## Follow-Up Questions
-
-After documentation is generated, the CLI can answer clarification questions during the same session. The follow-up assistant uses only in-memory LangChain message history and does not persist conversation data.
-
-## Project Structure
-
-```text
-src/
-  agents/       LLM-backed analysis, documentation, and follow-up agents
-  models/       Pydantic schemas
-  prompts/      Reusable LangChain prompt templates
-  services/     Shared LLM initialization
-  main.py       CLI entry point
-sample_code/    Example source files
-tests/          Unit tests
-output/         Generated documentation output
+python -m src.main --file sample_code/factorial.py
 ```
 
 ## Testing
 
-Run the unit tests:
-
 ```bash
-python -m unittest discover -s tests
+pytest
 ```
+
+Tests that invoke model-backed behavior may require a configured API key or
+mocked provider.
+
+## Project status
+
+**Functional prototype.** Python syntax validation passes across the repository.
+The project has a clear modular structure and tests, but it still depends on a
+live model provider and does not yet include CI.
+
+## Screenshot / demo
+
+Add a terminal GIF showing source input, validated analysis, generated Markdown,
+and a follow-up question.
+
+## Future improvements
+
+- Add offline provider mocks and deterministic integration tests
+- Add GitHub Actions for linting and tests
+- Stream long responses and expose token/cost estimates
+- Support repository-level analysis with explicit file-size limits
+- Add additional output formats such as JSON and HTML
